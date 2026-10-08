@@ -1,66 +1,267 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>System Alert 💀</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    body {
-      margin: 0;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: #080808;
-      color: white;
-      font-family: Arial, sans-serif;
-      text-align: center;
-    }
+<title>🚨 SYSTEM ALERT</title>
 
-    .box {
-      width: 85%;
-      max-width: 500px;
-      padding: 35px 20px;
-      border: 1px solid #444;
-      border-radius: 20px;
-      background: #111;
-      box-shadow: 0 0 30px rgba(255,255,255,0.08);
-    }
+<style>
+* {
+    box-sizing: border-box;
+}
 
-    h1 {
-      font-size: 30px;
-    }
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: #050505;
+    color: white;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
 
-    p {
-      font-size: 20px;
-      line-height: 1.6;
-    }
+.container {
+    width: 90%;
+    max-width: 520px;
+    padding: 30px 20px;
+    text-align: center;
+    border: 2px solid #ff2222;
+    border-radius: 20px;
+    background: rgba(10,10,10,.96);
+    box-shadow: 0 0 25px red;
+    position: relative;
+    z-index: 2;
+    animation: boxGlow 1s infinite alternate;
+}
 
-    .small {
-      font-size: 14px;
-      opacity: 0.6;
+@keyframes boxGlow {
+    from {
+        box-shadow: 0 0 15px red;
     }
-  </style>
+    to {
+        box-shadow: 0 0 35px #2070ff;
+    }
+}
+
+.siren {
+    display: none;
+    font-size: 75px;
+    animation: sirenShake .12s infinite alternate;
+}
+
+@keyframes sirenShake {
+    from {
+        transform: rotate(-10deg) scale(1);
+    }
+    to {
+        transform: rotate(10deg) scale(1.1);
+    }
+}
+
+h1 {
+    color: #ff3030;
+    animation: titleFlash .7s infinite alternate;
+}
+
+@keyframes titleFlash {
+    from {
+        color: #ff2020;
+    }
+    to {
+        color: #4388ff;
+    }
+}
+
+#status {
+    margin: 25px 0;
+    font-size: 18px;
+    min-height: 60px;
+}
+
+.progress {
+    width: 100%;
+    height: 12px;
+    background: #222;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.bar {
+    height: 100%;
+    width: 0%;
+    background: #ff2222;
+    box-shadow: 0 0 15px red;
+    transition: width .3s;
+}
+
+.warning {
+    display: none;
+    color: #ff3333;
+    font-weight: bold;
+    font-size: 22px;
+    animation: warningFlash .3s infinite alternate;
+}
+
+@keyframes warningFlash {
+    from {
+        opacity: .3;
+        transform: scale(.98);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1.03);
+    }
+}
+
+.result {
+    display: none;
+}
+
+.result h2 {
+    font-size: 30px;
+    color: #ff3030;
+    animation: reveal .8s infinite alternate;
+}
+
+@keyframes reveal {
+    from {
+        text-shadow: 0 0 5px red;
+    }
+    to {
+        text-shadow: 0 0 25px red;
+    }
+}
+
+.result p {
+    font-size: 20px;
+    line-height: 1.5;
+}
+
+.flash-screen {
+    position: fixed;
+    inset: 0;
+    background: red;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 10;
+    transition: opacity .1s;
+}
+</style>
 </head>
 
 <body>
 
-  <div class="box">
-    <h1>🚨 SYSTEM ALERT 🚨</h1>
+<div class="flash-screen" id="flash"></div>
 
-    <p>
-      Congratulations! 🎉
-      <br><br>
-      Tumne bina soche link open kar diya 💀
-      <br><br>
-      <b>IQ Test: FAILED 😂</b>
-    </p>
+<div class="container">
 
-    <p class="small">
-      Relax bro... prank tha. 😭
-    </p>
-  </div>
+    <div class="siren" id="siren">🚨</div>
+
+    <h1 id="title">SYSTEM INITIALIZING...</h1>
+
+    <div id="status">
+        🔍 Scanning device...
+    </div>
+
+    <div class="progress" id="progressBox">
+        <div class="bar" id="bar"></div>
+    </div>
+
+    <div class="warning" id="warning">
+        ⚠️ SUSPICIOUS USER DETECTED ⚠️
+    </div>
+
+    <div class="result" id="result">
+
+        <h2>🚨 SYSTEM ALERT 🚨</h2>
+
+        <p>
+            Congratulations! 🎉<br>
+            Tumne bina soche link open kar diya 💀
+        </p>
+
+        <h2>IQ TEST: FAILED 😂</h2>
+
+        <p>
+            Relax bro... 😭<br>
+            <b>PRANK THA! 🤣</b>
+        </p>
+
+    </div>
+
+</div>
+
+<script>
+
+const statusText = document.getElementById("status");
+const bar = document.getElementById("bar");
+const progressBox = document.getElementById("progressBox");
+const warning = document.getElementById("warning");
+const siren = document.getElementById("siren");
+const result = document.getElementById("result");
+const title = document.getElementById("title");
+const flash = document.getElementById("flash");
+
+function wait(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function startScan() {
+
+    statusText.innerText = "🔍 Scanning device...";
+    await wait(1000);
+
+    bar.style.width = "25%";
+    statusText.innerText = "🔎 Checking security status...";
+    await wait(1000);
+
+    bar.style.width = "55%";
+    statusText.innerText = "⚠️ Analyzing suspicious activity...";
+    await wait(1000);
+
+    bar.style.width = "85%";
+    statusText.innerText = "🚨 Almost done...";
+    await wait(800);
+
+    bar.style.width = "100%";
+    await wait(500);
+
+    progressBox.style.display = "none";
+    statusText.style.display = "none";
+    title.style.display = "none";
+
+    warning.style.display = "block";
+    siren.style.display = "block";
+
+    // Visual emergency flash only
+    let flashes = 0;
+
+    const flashTimer = setInterval(() => {
+        flash.style.opacity =
+            flash.style.opacity === "0" ? ".35" : "0";
+
+        flashes++;
+
+        if (flashes >= 10) {
+            clearInterval(flashTimer);
+            flash.style.opacity = "0";
+        }
+    }, 150);
+
+    await wait(3000);
+
+    warning.style.display = "none";
+    siren.style.display = "none";
+
+    result.style.display = "block";
+}
+
+startScan();
+
+</script>
 
 </body>
-</html>
+  </html>
